@@ -932,7 +932,7 @@
                 hiddenMessage: 'Rent bikes and explore a new part of town together.', difficulty: 'medium', image: '',
                 dateCreated: Date.now() },
             { id: '15', title: 'Cook Together', category: 'Date Ideas',
-                hiddenMessage: 'Choose a recipe you've never made and cook it together.', difficulty: 'hard', image: '',
+                hiddenMessage: 'Choose a recipe you\'ve never made and cook it together.', difficulty: 'hard', image: '',
                 dateCreated: Date.now() },
             { id: '16', title: 'Mini Golf', category: 'Date Ideas',
                 hiddenMessage: 'Play a round of mini golf and keep score – loser buys dinner.', difficulty: 'easy',
@@ -972,7 +972,7 @@
                 hiddenMessage: 'You are stronger than you think – I admire your resilience.', difficulty: 'hard',
                 image: '', dateCreated: Date.now() },
             { id: '28', title: 'Warm Heart', category: 'Compliments',
-                hiddenMessage: 'You have the warmest heart – it's a gift to everyone around you.', difficulty: 'easy',
+                hiddenMessage: 'You have the warmest heart – it\'s a gift to everyone around you.', difficulty: 'easy',
                 image: '', dateCreated: Date.now() },
             { id: '29', title: 'Adventurous Spirit', category: 'Compliments',
                 hiddenMessage: 'Your adventurous spirit makes life exciting and full of possibilities.',
@@ -1072,8 +1072,6 @@
         let imageLoaded = false;
         let isRevealed = false;
 
-        // ... [rest of the script remains the same]
-        
         function saveState() {
             try {
                 localStorage.setItem('scratchQuestCards', JSON.stringify(cards));
@@ -1097,6 +1095,9 @@
 
         function initAudio() {
             if (!audioCtx) audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
         }
 
         function playScratchSound() {
@@ -1205,8 +1206,10 @@
             }
             document.getElementById('app').innerHTML = html;
             attachEvents();
+            if (currentPage === 'customize') {
+                attachCustomEvents();
+            }
             if (currentPage === 'play' && currentCard && !(currentCard.isTruthDare && isTdRevealed)) {
-                // Only init scratch if it's not a revealed TruthDare card
                 initScratchCard();
             }
             saveState();
